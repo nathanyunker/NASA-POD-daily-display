@@ -13,8 +13,6 @@ const wallpaper = require('wallpaper');
 
 // module.exports = config;
 
-
-
 apod.apiKey = config.apiKey;
 
 function callback(err, data) {
@@ -47,7 +45,11 @@ function setWallpaper() {
   wallpaper.set(config.imageDest)
     .then(() => {
       console.log('WALLPAPER SET!');
-  });
+    })
+    .catch((err) => {
+      console.log('ITS ERRORING OUT!!', err);
+      throw err
+    });
 }
 
 // get today's APOD:

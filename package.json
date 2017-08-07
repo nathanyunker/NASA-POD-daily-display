@@ -11,6 +11,7 @@
   "dependencies": {
     "apod": "^0.3.0",
     "image-downloader": "^3.2.2",
+    "node-windows": "^4.1.2",
     "wallpaper": "^2.5.0"
   }
 }
