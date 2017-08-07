@@ -48,9 +48,9 @@ function setWallpaper() {
     .then(() => {
       console.log('WALLPAPER SET!');
     })
-    .catch(err){
+    .catch((err) =>{
       throw err;
-    };
+    });
 }
 
 // get today's APOD:
