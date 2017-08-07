@@ -17,7 +17,7 @@ const wallpaper = require('wallpaper');
 
 apod.apiKey = config.apiKey;
 
-function callback(err, data) {
+function init(err, data) {
   if (err) {
     console.log("ERROR recieving NASA Picture of the day: ", err);
   } else {
@@ -39,7 +39,7 @@ function saveImage(imageUrl) {
       console.log('File saved successfully')
       setWallpaper();
     }).catch((err) => {
-      throw err
+      throw err;
     })
 }
  
@@ -47,11 +47,14 @@ function setWallpaper() {
   wallpaper.set(config.imageDest)
     .then(() => {
       console.log('WALLPAPER SET!');
-  });
+    })
+    .catch(err){
+      throw err;
+    };
 }
 
 // get today's APOD:
-//apod(callback);
+apod(init);
 
 // APOD for a specific date:
 //apod("December 31, 1999", callback);
@@ -59,4 +62,4 @@ function setWallpaper() {
 //apod(1999, 11, 31, callback);
 
 // random APOD: 
-apod.random(callback);
+//apod.random(callback);
