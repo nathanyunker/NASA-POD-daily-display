@@ -65,7 +65,7 @@ function usePictureFromPreviousDay() {
   pictureDate.setDate(pictureDate.getDate() - 1);
   retries ++;
 
-  if (retries > config.maxRetries) {
+  if (retries > (config.maxRetries || 7)) {
     console.log('Unable to find a Picture of the Day for the last ' + retries + ' days.')
   } else {
     console.log('Retrieving NASA picture of the day for: ' + pictureDate.toDateString());
