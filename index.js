@@ -1,6 +1,7 @@
 const apod = require("apod");
 const config = require('./config');
-const download = require('image-downloader')
+const download = require('image-downloader');
+var fs = require('fs');
 const wallpaper = require('wallpaper');
  
 // Create a config.js file in the root directory with <apiKey> and <imgDest> attributes. Example below:
@@ -16,13 +17,20 @@ const wallpaper = require('wallpaper');
 
 
 apod.apiKey = config.apiKey;
+let pictureDate = new Date();
+let retries = 0;
 
-function init(err, data) {
+function processImage(err, data) {
   if (err) {
     console.log("ERROR recieving NASA Picture of the day: ", err);
   } else {
-    console.log('Recieved NASA Picture of the Day...');
-    saveImage(data.hdurl || data.url)
+    if (data.media_type === 'image') {
+      console.log('Recieved NASA Picture of the Day...');
+      saveImage(data.hdurl || data.url)
+    } else {
+      console.log('Media Type is not an Image. Using Picture for previous day.')
+      usePictureFromPreviousDay();
+    }
   }
 }
 
@@ -46,20 +54,32 @@ function saveImage(imageUrl) {
 function setWallpaper() {
   wallpaper.set(config.imageDest)
     .then(() => {
-      console.log('WALLPAPER SET!');
+      console.log('Wallpaper Set!');
     })
-    .catch((err) =>{
+    .catch((err) => {
       throw err;
     });
 }
 
+function usePictureFromPreviousDay() {
+  pictureDate.setDate(pictureDate.getDate() - 1);
+  retries ++;
+
+  if (retries > config.maxRetries) {
+    console.log('Unable to find a Picture of the Day for the last ' + retries + ' days.')
+  } else {
+    console.log('Retrieving NASA picture of the day for: ' + pictureDate.toDateString());
+    apod(pictureDate, processImage)
+  }
+}
+
 // get today's APOD:
-apod(init);
+apod(processImage);
 
 // APOD for a specific date:
-//apod("December 31, 1999", callback);
+//apod("December 31, 1999", processImage);
 //or
-//apod(1999, 11, 31, callback);
+//apod(1999, 11, 31, processImage);
 
 // random APOD: 
-//apod.random(callback);
+//apod.random(processImage);
