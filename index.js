@@ -4,12 +4,13 @@ const download = require('image-downloader');
 var fs = require('fs');
 const wallpaper = require('wallpaper');
  
-// Create a config.js file in the root directory with <apiKey> and <imgDest> attributes. Example below:
+// Create a config.js file in the root directory with <apiKey> and <imgDest> attributes. May also set the number of previous days to search if current day is not a picture. Example below:
 // let config = {};
 
 // config = {
 //   apiKey: 'Enter Your NASA APOD API key here',
 //   imageDest: 'Enter the path of desired file location, including desired file name. Example: 'C:/path/to/dest/photo.jpg''
+//   maxRetries: 7
 // };
 
 // module.exports = config;
